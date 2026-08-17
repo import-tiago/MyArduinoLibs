@@ -1,6 +1,6 @@
 # MyArduinoLibs
 
-[MyArduinoLibs](https://github.com/import-tiago/MyArduinoLibs) organizes the
+MyArduinoLibs organizes the
 development of multiple Arduino libraries in a single repository. Each
 directory represents an independent library with its own source code, manifest,
 version, and package.
