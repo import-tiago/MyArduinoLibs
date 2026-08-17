@@ -1,0 +1,25 @@
+{
+  "name": "LSM6DSM",
+  "version": "0.1.0",
+  "description": "Arduino library for the ST LSM6DSM I2C 6-axis IMU with motion interrupt support.",
+  "keywords": [
+    "imu",
+    "accelerometer",
+    "gyroscope",
+    "lsm6dsm",
+    "motion"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/import-tiago/MyArduinoLibs.git"
+  },
+  "authors": [
+    {
+      "name": "Tiago Silva",
+      "email": "tiagodepaulasilva@gmail.com"
+    }
+  ],
+  "frameworks": "arduino",
+  "platforms": "espressif32",
+  "headers": "LSM6DSM.h"
+}

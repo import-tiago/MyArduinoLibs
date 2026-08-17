@@ -1,0 +1,25 @@
+{
+  "name": "RV8803",
+  "version": "0.1.0",
+  "description": "Arduino library for the Micro Crystal RV-8803-C7 I2C real-time clock using epoch time.",
+  "keywords": [
+    "rtc",
+    "rv8803",
+    "time",
+    "epoch",
+    "i2c"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/import-tiago/MyArduinoLibs.git"
+  },
+  "authors": [
+    {
+      "name": "Tiago Silva",
+      "email": "tiagodepaulasilva@gmail.com"
+    }
+  ],
+  "frameworks": "arduino",
+  "platforms": "*",
+  "headers": "RV8803.h"
+}

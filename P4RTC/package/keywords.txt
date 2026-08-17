@@ -1,0 +1,4 @@
+P4RTC	KEYWORD1
+get_epoch	KEYWORD2
+set_epoch	KEYWORD2
+enable_vbat_backup	KEYWORD2

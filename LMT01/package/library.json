@@ -1,0 +1,25 @@
+{
+  "name": "LMT01",
+  "version": "0.1.0",
+  "description": "ESP32 Arduino library for the Texas Instruments LMT01 digital temperature sensor using pulse counting.",
+  "keywords": [
+    "temperature",
+    "sensor",
+    "lmt01",
+    "esp32",
+    "pulse"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/import-tiago/MyArduinoLibs.git"
+  },
+  "authors": [
+    {
+      "name": "Tiago Silva",
+      "email": "tiagodepaulasilva@gmail.com"
+    }
+  ],
+  "frameworks": "arduino",
+  "platforms": "espressif32",
+  "headers": "LMT01.h"
+}

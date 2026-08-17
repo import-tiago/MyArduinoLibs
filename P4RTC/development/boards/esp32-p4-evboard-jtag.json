@@ -1,0 +1,50 @@
+{
+  "build": {
+    "arduino": {
+      "memory_type": "qio_qspi"
+    },
+    "core": "esp32",
+    "extra_flags": [
+      "-DBOARD_HAS_PSRAM"
+    ],
+    "f_cpu": "360000000L",
+    "f_flash": "80000000L",
+    "flash_mode": "qio",
+    "mcu": "esp32p4",
+    "psram_type": "qio",
+    "variant": "esp32p4"
+  },
+  "arduino": {
+    "partitions": "default_16MB.csv"
+  },
+  "connectivity": [
+    "bluetooth",
+    "openthread"
+  ],
+  "debug": {
+    "default_tool": "esp-builtin",
+    "onboard_tools": [
+      "esp-builtin"
+    ],
+    "openocd_target": "esp32p4.cfg"
+  },
+  "frameworks": [
+    "arduino",
+    "espidf"
+  ],
+  "name": "Espressif ESP32-P4 Function EV Board (32MB Flash, 32MB PSRAM, built-in USB-JTAG)",
+  "upload": {
+    "flash_size": "32MB",
+    "maximum_ram_size": 512000,
+    "maximum_size": 33554432,
+    "protocol": "esp-builtin",
+    "protocols": [
+      "esptool",
+      "esp-builtin"
+    ],
+    "require_upload_port": false,
+    "speed": 1500000
+  },
+  "url": "https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32p4/esp32-p4-function-ev-board/index.html",
+  "vendor": "Espressif"
+}
