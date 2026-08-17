@@ -1,28 +1,17 @@
 # MyArduinoLibs
 
-MyArduinoLibs is a monorepo for developing, validating, and independently
-distributing Arduino libraries with PlatformIO.
+[MyArduinoLibs](https://github.com/import-tiago/MyArduinoLibs) organizes the
+development of multiple Arduino libraries in a single repository. Each
+directory represents an independent library with its own source code, manifest,
+version, and package.
 
-Each top-level directory represents an independent library with its own source
-code, manifest, version, documentation, development project, and distributable
-package. This keeps development standardized without requiring users to install
-the entire monorepo.
-
-## Libraries
-
-| Library | Purpose | Public header | Target |
-| --- | --- | --- | --- |
-| [LMT01](LMT01/README.md) | Pulse-counting driver for the TI LMT01 temperature sensor | `<LMT01.h>` | ESP32 |
-| [LSM6DSM](LSM6DSM/README.md) | I2C driver for the ST LSM6DSM 6-axis IMU | `<LSM6DSM.h>` | ESP32 |
-| [P4RTC](P4RTC/README.md) | Epoch-based access to the ESP32-P4 internal RTC and VBAT backup | `<P4RTC.h>` | ESP32-P4 |
-| [RV8803](RV8803/README.md) | Epoch-based I2C driver for the Micro Crystal RV-8803-C7 RTC | `<RV8803.h>` | Arduino-compatible boards |
-
-Follow a library link for its API, wiring, examples, compatibility notes, and
-datasheets.
+The goal is to maintain a standardized workspace without requiring users to
+install the entire monorepo. After a library is published to the PlatformIO
+Registry, it can be added independently to another project.
 
 ## Structure and responsibilities
 
-Each library follows the same base organization:
+Each library follows the same organization:
 
 ```text
 <LIBRARY>/
@@ -39,67 +28,49 @@ Each library follows the same base organization:
     ├── library.properties
     ├── keywords.txt
     ├── examples/
-    │   └── BasicUsage/
-    │       └── BasicUsage.ino
     └── src/
-        ├── <LIBRARY>.h
-        └── <LIBRARY>.cpp
 ```
 
-- **`package/`** is the distributable library. It contains the implementation,
-  public API, manifests, and public examples.
-- **`development/`** is a complete PlatformIO project used to compile and test
-  the package and, when hardware support is configured, upload and debug the
-  development firmware.
-- **`assets/`** contains datasheets, diagrams, screenshots, and other supporting
-  material that should not be installed with the library.
-- **`<LIBRARY>/README.md`** is the canonical consumer documentation inside the
-  monorepo. It is intentionally not duplicated manually under `package/`.
-
-Some development projects may require extra board definitions, scripts, or
-tools. P4RTC, for example, keeps its custom ESP32-P4 board and USB-JTAG support
-under `development/`. Development-only files must never be copied into
-`package/`.
+- **`package/`:** content delivered to the user, including the implementation,
+  API, manifest, and public examples;
+- **`development/`:** complete PlatformIO project used to build, upload, and
+  debug directly on the hardware;
+- **`assets/`:** datasheets, diagrams, and other internal materials that do not
+  need to accompany the installation.
 
 `library.json` is the PlatformIO manifest. `library.properties` and
-`keywords.txt` provide compatibility and metadata for the broader Arduino
-ecosystem.
+`keywords.txt` are used when compatibility with tools from the Arduino
+ecosystem is also desired. `README.md` and the files under `assets/` document
+the library inside the repository, but they are not included with the installed
+package because they are outside `package/`.
 
-Files outside `package/` are not included when the package is packed or
-published. If a future release must include a README, license, or image, that
-file must be added to the package by the release process or use a public URL.
-
-## Single source of truth
-
-The real library code exists only in:
-
-```text
-<LIBRARY>/package/src/
-```
-
-The development project must not contain synchronized copies of public headers
-or implementation files. Instead, `development/platformio.ini` declares the
-local package as a dependency:
+The library code exists only in `package/src/`. To use it without creating a
+copy, `development/platformio.ini` declares a local dependency:
 
 ```ini
+[env:development]
+platform = <platform-id>
+board = <board-id>
+framework = arduino
+
 lib_deps =
     symlink://../package
 ```
 
-The `symlink://` protocol makes PlatformIO consume the local package directly.
-No manual operating-system symlink and no copy script are required. Changes in
-`package/src/` are therefore used by the next development build immediately.
+The `symlink://` protocol makes the development project use the local package
+directly and works without manually creating symbolic links in the operating
+system.
 
 ## The `library.json` manifest
 
-Each `package/` directory has an independent manifest. A minimal template is:
+Each `package/` has an independent manifest. A minimal template is:
 
 ```json
 {
   "$schema": "https://raw.githubusercontent.com/platformio/platformio-core/develop/platformio/assets/schema/library.json",
   "name": "LibraryName",
   "version": "0.1.0",
-  "description": "A concise description of the library",
+  "description": "Objective description of the library",
   "keywords": ["arduino", "embedded"],
   "repository": {
     "type": "git",
@@ -111,29 +82,16 @@ Each `package/` directory has an independent manifest. A minimal template is:
       "maintainer": true
     }
   ],
-  "frameworks": "arduino",
-  "platforms": "*",
-  "headers": "LibraryName.h"
+  "frameworks": ["arduino"],
+  "platforms": "*"
 }
 ```
 
-The name, version, authors, repository, compatibility, headers, and dependencies
-must describe the package being published. When support is limited, list only
-platforms that are intentionally supported and validated.
-
-The optional `license` field accepts an SPDX expression, such as `MIT` or
-`Apache-2.0`. Add it only after the project license has been selected and the
-corresponding license text is available; do not use a placeholder as a real
-license value.
-
-The optional `export` field controls which files are included or excluded.
-Because `package/` is already the publication boundary in this repository, it
-normally does not need to exclude monorepo development files.
-
-References:
-
-- [PlatformIO `library.json` format](https://docs.platformio.org/en/latest/manifests/library-json/index.html)
-- [PlatformIO export rules](https://docs.platformio.org/en/latest/manifests/library-json/fields/export/index.html)
+The name, version, and compatibility must represent the published package. When
+support is limited, prefer to list only the platforms that have actually been
+validated. The optional `export` field controls inclusions and exclusions. See
+the [`library.json` format](https://docs.platformio.org/en/latest/manifests/library-json/index.html)
+and the [export rules](https://docs.platformio.org/en/latest/manifests/library-json/fields/export/index.html).
 
 ## Versioning
 
@@ -143,45 +101,37 @@ Each library evolves independently using Semantic Versioning:
 MAJOR.MINOR.PATCH
 ```
 
-- `MAJOR`: an incompatible public API change;
-- `MINOR`: backward-compatible functionality;
+- `MAJOR`: an incompatible API change;
+- `MINOR`: new backward-compatible functionality;
 - `PATCH`: a backward-compatible fix.
 
-The monorepo tag convention is:
-
-```text
-<LIBRARY>-v<VERSION>
-```
-
-The tag version must match `package/library.json`. For example,
-`P4RTC-v0.1.0` must point to a commit where `P4RTC/package/library.json`
-contains version `0.1.0`.
+A suitable tag convention for the monorepo is `<LIBRARY>-v<VERSION>`. The tag
+version must match `package/library.json`.
 
 ## Local development
 
-The `development/` directory is the PlatformIO workspace, but the driver itself
-must still be edited under `package/src/`.
+`development/` must be opened as the PlatformIO project. It contains the
+complete environment for building, uploading, and debugging directly on the
+hardware, but it does not contain the library implementation.
 
-### 1. Open the development project
+The driver is edited in `package/src/`. Only the lab firmware that uses this
+driver is kept in `development/src/main.cpp`.
 
-From the repository root:
+### 1. Prepare the environment
+
+Enter the library project:
 
 ```powershell
 cd <LIBRARY>\development
 ```
 
-Use these locations while working:
+In `platformio.ini`, configure the platform, board, framework, and local package
+dependency:
 
-```text
-../package/src/     library implementation and public API
-src/main.cpp        lab firmware and hardware experiments
-test/               PlatformIO tests
-DEVELOPMENT.md      board setup and maintainer notes
+```ini
+lib_deps =
+    symlink://../package
 ```
-
-The existing `platformio.ini` already selects the supported platform, board,
-framework, and local package dependency. Do not replace library includes with
-relative paths such as `../../package/src/LibraryName.h`.
 
 ### 2. Build
 
@@ -189,65 +139,36 @@ relative paths such as `../../package/src/LibraryName.h`.
 pio run
 ```
 
-The build must resolve the public header through the PlatformIO Library
-Dependency Finder. Application code should use an angle-bracket include:
-
-```cpp
-#include <LibraryName.h>
-```
-
-### 3. Upload or debug when supported
-
-With a compatible board connected and the upload method correctly configured:
+### 3. Upload to the target
 
 ```powershell
 pio run --target upload
-```
-
-Debugging is optional and requires a supported debug interface and matching
-PlatformIO configuration:
-
-```powershell
 pio debug
 ```
 
-These commands are hardware-specific. A successful build does not by itself
-guarantee that upload or debugging is configured for every board.
+### 4. Create the publication package
 
-### 4. Run tests when available
-
-```powershell
-pio test
-```
-
-Hardware-dependent tests may require a connected target or a dedicated test
-environment.
-
-### 5. Create a publication archive
-
-Enter the directory that contains `library.json` and pack it:
+Enter the directory containing `library.json` and run:
 
 ```powershell
 cd ..\package
 pio pkg pack
 ```
 
-`pio pkg pack` validates the manifest, applies packaging rules, and creates a
-local archive such as `LibraryName-0.1.0.tar.gz`. It does not compile the
-library, require an authenticated account, or publish anything.
+`pio pkg pack` applies the manifest rules and locally creates a file such as
+`LibraryName-0.1.0.tar.gz`. It does not build, require a login, or publish
+anything. See the
+[`pio pkg pack` documentation](https://docs.platformio.org/en/latest/core/userguide/pkg/cmd_pack.html).
 
-See the [`pio pkg pack` documentation](https://docs.platformio.org/en/latest/core/userguide/pkg/cmd_pack.html).
+### 5. Inspect the publication contents
 
-### 6. Inspect the archive
-
-List its contents without extracting it:
+List the package without extracting it:
 
 ```powershell
 tar -tf .\LibraryName-0.1.0.tar.gz
 ```
 
-For the current repository architecture, the archive should contain only the
-contents of `package/`, typically:
+With the current structure, the archive must contain only:
 
 ```text
 library.json
@@ -257,108 +178,50 @@ examples/
 src/
 ```
 
-It must not contain `development/`, `assets/`, build artifacts, or another
-library. Generated `.tar.gz` archives are local verification artifacts and
-should not be committed.
+It does not contain `README.md`, files from `assets/`, or any other content kept
+outside `package/`. The `.tar.gz` is a local verification artifact and normally
+should not be versioned.
 
-### 7. Publish manually
+### 6. Publish
 
-Publishing requires an authenticated PlatformIO account:
+Publishing requires an authenticated account. For manual use:
 
 ```powershell
 pio account login
 pio account show
 ```
 
-After logging in, publish from the selected library's `package/` directory:
+After logging in, publish from `package/`:
 
 ```powershell
 pio pkg publish --no-interactive
 ```
 
-`--no-interactive` removes the terminal confirmation; it does not replace
-authentication. Creating a Git tag or a `.tar.gz` archive does not publish the
-library.
+`--no-interactive` removes the terminal confirmation, but it does not replace
+the login.
 
-A package name and version combination cannot be reused after publication. Any
-fix requires a new version in `library.json` before republishing.
+Creating a tag or generating the `.tar.gz` does not publish the library.
 
-See the [`pio pkg publish` documentation](https://docs.platformio.org/en/latest/core/userguide/pkg/cmd_publish.html).
+In addition, a previously published name and version combination cannot be
+reused; a correction requires a new version.
 
-## Using a library in another project
+See [`pio account login`](https://docs.platformio.org/en/latest/core/userguide/account/cmd_login.html)
+and [`pio pkg publish`](https://docs.platformio.org/en/latest/core/userguide/pkg/cmd_publish.html).
 
-### Install from the PlatformIO Registry
+## Using it in another project
 
-After publication, a consumer declares only the required package. P4RTC is
-currently available as version `0.1.0`:
+After publication, the consumer declares only the required package:
 
 ```ini
-[env:esp32-p4]
-platform = espressif32
-board = <esp32-p4-board-id>
+[env:application]
+platform = <platform-id>
+board = <board-id>
 framework = arduino
 
 lib_deps =
     controlandoeletrons/P4RTC @ 0.1.0
 ```
 
-Using an exact version makes the dependency reproducible. A compatible version
-range such as `^0.1.0` may be used when automatic compatible updates are
-desired.
-
-The other libraries can use the same owner/name/version form after they have
-been published independently.
-
-### Use a local checkout
-
-Before publication, or while developing an application and a library together,
-point the consumer project directly at the selected package:
-
-```ini
-[env:esp32dev]
-platform = espressif32
-board = esp32dev
-framework = arduino
-
-lib_deps =
-    symlink://../MyArduinoLibs/LMT01/package
-```
-
-Adjust the relative path for the actual workspace layout.
-
-### Include the public API
-
-User firmware includes only the public header and does not need to know about
-the monorepo layout. For example:
-
-```cpp
-#include <P4RTC.h>
-
-P4RTC rtc;
-
-void setup() {
-    rtc.enable_vbat_backup();
-}
-
-void loop() {
-    time_t now = rtc.get_epoch();
-    // Use the current epoch value.
-}
-```
-
-Always consult the selected library's README for supported hardware,
-initialization, wiring, and API details. Installing a Registry package does not
-install the other libraries, `development/`, or `assets/` from this monorepo.
-
-## Final principle
-
-```text
-package/src/          real library implementation and single source of truth
-development/src/      development application only
-development/test/     tests
-package/examples/     public user examples
-assets/               datasheets and supporting documentation
-```
-
-The package is the product, `development/` is the laboratory, and the
-MyArduinoLibs monorepo is the canonical source of truth.
+Specifying the owner, name, and version requirement avoids ambiguity and keeps
+the project reproducible. The other directories from the monorepo are not
+installed.
