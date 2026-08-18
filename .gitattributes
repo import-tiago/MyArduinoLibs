@@ -4,3 +4,6 @@
 *.pdf binary
 *.exe binary
 *.bit binary
+
+# Ignore bundled OpenOCD Tcl scripts in GitHub language statistics.
+*.tcl linguist-detectable=false
