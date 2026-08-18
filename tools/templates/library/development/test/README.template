@@ -1,0 +1,4 @@
+Add automated tests for __LIBRARY_NAME__ here.
+
+Native CMake tests, when available, should use development/test/host as their
+root so Test-Library.ps1 can discover and run them.

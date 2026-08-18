@@ -1,0 +1,13 @@
+[platformio]
+build_dir = ${sysenv.TEMP}/pio-__LIBRARY_NAME__-test-build
+
+[env:development]
+platform = __PLATFORM__
+board = __BOARD__
+framework = arduino
+monitor_speed = 115200
+lib_archive = no
+lib_deps =
+    symlink://../package
+
+build_type = debug

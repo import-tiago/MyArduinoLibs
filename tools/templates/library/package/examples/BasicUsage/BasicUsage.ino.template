@@ -1,0 +1,13 @@
+#include <__LIBRARY_NAME__.h>
+
+__LIBRARY_NAME__ library;
+
+void setup() {
+    if (!library.begin()) {
+        while (true) {
+            delay(1000);
+        }
+    }
+}
+
+void loop() {}

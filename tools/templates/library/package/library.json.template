@@ -1,0 +1,24 @@
+{
+  "$schema": "https://raw.githubusercontent.com/platformio/platformio-core/develop/platformio/assets/schema/library.json",
+  "name": "__LIBRARY_NAME__",
+  "version": "__VERSION__",
+  "description": __DESCRIPTION_JSON__,
+  "keywords": [
+    "arduino",
+    "embedded"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/import-tiago/MyArduinoLibs.git"
+  },
+  "authors": [
+    {
+      "name": __AUTHOR_JSON__,
+      "email": __EMAIL_JSON__,
+      "maintainer": true
+    }
+  ],
+  "frameworks": ["arduino"],
+  "platforms": [__PLATFORM_JSON__],
+  "headers": "__LIBRARY_NAME__.h"
+}

@@ -1,0 +1,10 @@
+name=__LIBRARY_NAME__
+version=__VERSION__
+author=__AUTHOR__
+maintainer=__AUTHOR__ <__EMAIL__>
+sentence=__DESCRIPTION__
+paragraph=__DESCRIPTION__
+category=__CATEGORY__
+url=https://github.com/import-tiago/MyArduinoLibs/tree/main/__LIBRARY_NAME__
+architectures=__ARCHITECTURES__
+includes=__LIBRARY_NAME__.h

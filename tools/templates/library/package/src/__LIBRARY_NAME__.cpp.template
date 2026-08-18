@@ -1,0 +1,5 @@
+#include "__LIBRARY_NAME__.h"
+
+bool __LIBRARY_NAME__::begin() {
+    return true;
+}
