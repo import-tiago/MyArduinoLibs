@@ -7,3 +7,6 @@
 
 # Ignore bundled OpenOCD Tcl scripts in GitHub language statistics.
 *.tcl linguist-detectable=false
+
+# Exclude the bundled OpenOCD distribution from GitHub language statistics.
+P4RTC/development/tools/openocd-esp32-p4/** linguist-vendored
