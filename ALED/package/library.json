@@ -1,0 +1,30 @@
+{
+  "$schema": "https://raw.githubusercontent.com/platformio/platformio-core/develop/platformio/assets/schema/library.json",
+  "name": "MyALED",
+  "version": "1.0.0",
+  "description": "Controls SK6812 RGBW and WS2812 RGB LED pixels and strips using the ESP32 RMT peripheral.",
+  "keywords": [
+    "esp32",
+    "led",
+    "rmt",
+    "rgbw",
+    "sk6812",
+    "ws2812"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/import-tiago/MyArduinoLibs.git"
+  },
+  "authors": [
+    {
+      "name": "Tiago Silva",
+      "email": "tiagodepaulasilva@gmail.com",
+      "maintainer": true
+    }
+  ],
+  "license": "GPL-3.0-only",
+  "homepage": "https://github.com/import-tiago/MyArduinoLibs/tree/main/ALED",
+  "frameworks": ["arduino"],
+  "platforms": ["espressif32"],
+  "headers": "MyALED.h"
+}

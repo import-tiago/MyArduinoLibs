@@ -1,0 +1,4 @@
+Native host tests and their Arduino/RMT stubs are stored under host/.
+
+Run them from the development directory using the commands documented in
+DEVELOPMENT.md.
